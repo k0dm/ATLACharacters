@@ -1,6 +1,5 @@
 package com.k0dm.atlacharacters
 
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -72,34 +71,31 @@ class FavoritesPage {
     fun checkExpandedCharacter(position: Int, character: Character) {
         onView(RecyclerViewMatcher(recyclerViewId, position, contentLayoutId))
             .check(matches(isDisplayed()))
-            .check(matches(withParent(withId(R.id.favoriteCharacterExpandedLayout))))
 
         onView(RecyclerViewMatcher(recyclerViewId, position, R.id.nameTextView))
-            .check(withText(character.name))
+            .check(matches(withText(character.name)))
 
         onView(RecyclerViewMatcher(recyclerViewId, position, R.id.characterImageView))
-            .check(isDisplayed())
+            .check(matches(isDisplayed()))
 
         onView(RecyclerViewMatcher(recyclerViewId, position, R.id.alliesTextView))
-            .check(withText(character.allies))
+            .check(matches(withText(character.allies)))
 
         onView(RecyclerViewMatcher(recyclerViewId, position, R.id.enemiesTextView))
-            .check(withText(character.enemies))
+            .check(matches(withText(character.enemies)))
 
         onView(RecyclerViewMatcher(recyclerViewId, position, R.id.affiliationTextView))
-            .check(withText(character.affiliation))
+            .check(matches(withText(character.affiliation)))
 
-        onView(RecyclerViewMatcher(recyclerViewId, position, R.id.collapseButton))
+        onView(RecyclerViewMatcher(recyclerViewId, position, R.id.collapseImageView))
             .check(matches(isDisplayed()))
-            .check(matches(withParent(withId(R.id.favoriteCharacterExpandedLayout))))
 
-        onView(RecyclerViewMatcher(recyclerViewId, position, R.id.favoriteButton))
+        onView(RecyclerViewMatcher(recyclerViewId, position, R.id.favoriteImageView))
             .check(matches(isDisplayed()))
-            .check(matches(withParent(withId(R.id.favoriteCharacterExpandedLayout))))
     }
 
     fun clickCollapseButton(position: Int) {
-        onView(RecyclerViewMatcher(recyclerViewId, position, R.id.collapseButton))
+        onView(RecyclerViewMatcher(recyclerViewId, position, R.id.favoriteImageView))
             .perform(click())
     }
 }

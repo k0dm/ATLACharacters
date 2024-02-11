@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.example.recyclerviewmatcher.ImageViewDrawableMatcher
 import com.google.android.material.button.MaterialButton
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
@@ -27,9 +28,9 @@ class CharactersPage {
     )
     private val favoriteImageView = onView(
         allOf(
-            withId(R.id.favoriteButton),
+            withId(R.id.favoriteImageView),
             isAssignableFrom(ImageView::class.java),
-            withParent(withId())
+            withParent(withId(characterLayoutId))
         )
     )
     private val contentLayoutId = R.id.contentLayout
@@ -47,7 +48,7 @@ class CharactersPage {
             withParent(withId(characterLayoutId))
         )
     )
-    
+
     fun checkIsDisplayed() {
         characterLayout.check(matches(isDisplayed()))
         favoriteImageView.check(matches(isDisplayed()))
@@ -66,7 +67,7 @@ class CharactersPage {
                 isAssignableFrom(TextView::class.java),
                 withParent(withId(contentLayoutId))
             )
-        ).check(withText(character.name))
+        ).check(matches(withText(character.name)))
 
         onView(
             allOf(
@@ -74,25 +75,31 @@ class CharactersPage {
                 isAssignableFrom(ImageView::class.java),
                 withParent(withId(contentLayoutId))
             )
-        ).check(isDisplayed())
+        ).check(matches(isDisplayed()))
 
         onView(
-            withId(R.id.alliesTextView),
-            isAssignableFrom(TextView::class.java),
-            withParent(withId(contentLayoutId))
-        ).check(withText(character.allies))
+            allOf(
+                withId(R.id.alliesTextView),
+                isAssignableFrom(TextView::class.java),
+                withParent(withId(contentLayoutId))
+            )
+        ).check(matches(withText(character.allies)))
 
         onView(
-            withId(R.id.enemiesTextView),
-            isAssignableFrom(TextView::class.java),
-            withParent(withId(contentLayoutId))
-        ).check(withText(character.enemies))
+            allOf(
+                withId(R.id.enemiesTextView),
+                isAssignableFrom(TextView::class.java),
+                withParent(withId(contentLayoutId))
+            )
+        ).check(matches(withText(character.enemies)))
 
         onView(
-            withId(R.id.affiliationTextView),
-            isAssignableFrom(TextView::class.java),
-            withParent(withId(contentLayoutId))
-        ).check(withText(character.affiliation))
+            allOf(
+                withId(R.id.affiliationTextView),
+                isAssignableFrom(TextView::class.java),
+                withParent(withId(contentLayoutId))
+            )
+        ).check(matches(withText(character.affiliation)))
     }
 
     fun clickNext() {
@@ -126,7 +133,7 @@ class CharactersPage {
     }
 
     fun checkAddedToFavorite() {
-        favoriteImageView.check(matches(R.drawable.not_favorite))
+        favoriteImageView.check(matches(ImageViewDrawableMatcher(R.drawable.favorite)))
     }
 
     fun addToFavorite() {
