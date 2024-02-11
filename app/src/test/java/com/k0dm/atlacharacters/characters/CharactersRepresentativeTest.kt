@@ -60,7 +60,7 @@ class CharactersRepresentativeTest {
 
         //user adds to favorites
         representative.addToFavorite()
-        assertEquals(1, interactor.addToFavoriteCalledCount)
+        assertEquals(1, interactor.changeFavoriteStatusCalledCount)
         assertEquals(3, runAsync.startCalledCount)
 
         runAsync.pingResult()
@@ -98,10 +98,10 @@ private class FakeInteractor : CharactersInteractor {
         }
     }
 
-    var addToFavoriteCalledCount = 0
+    var changeFavoriteStatusCalledCount = 0
 
-    override suspend fun addToFavorite() {
-        addToFavoriteCalledCount++
+    override suspend fun changeFavoriteStatus() {
+        changeFavoriteStatusCalledCount++
     }
 }
 
@@ -114,7 +114,7 @@ private class FakeObservable : CharactersUiStateObservable {
         actualUiState = uiState
     }
 
-    override fun updateObsever(observer: UiObserver<CharactersUiState>) {
+    override fun updateUiObsever(observer: UiObserver<CharactersUiState>) {
         actualUiObserver = observer
     }
 }
