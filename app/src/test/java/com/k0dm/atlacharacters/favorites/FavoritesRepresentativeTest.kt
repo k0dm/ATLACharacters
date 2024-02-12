@@ -1,5 +1,6 @@
 package com.k0dm.atlacharacters.favorites
 
+import com.k0dm.atlacharacters.characters.data.CharacterModel
 import com.k0dm.atlacharacters.core.FakeRunAsync
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -36,7 +37,7 @@ class FavoritesRepresentativeTest {
             FavoritesUiState.Base(
                 listOf(
                     FavoriteCharacterUI(
-                        id = 0,
+                        id = "0",
                         name = "Asami Sato",
                         allies = "Hiroshi Sato, Korra",
                         enemies = "Amon",
@@ -45,7 +46,7 @@ class FavoritesRepresentativeTest {
                         isExpanded = false
                     ),
                     FavoriteCharacterUI(
-                        id = 1,
+                        id = "1",
                         name = "Unalaq",
                         allies = "Northern Water Tribe",
                         enemies = "Northern Water Tribe",
@@ -61,7 +62,7 @@ class FavoritesRepresentativeTest {
         //user clicks at first item
         representative.clickItem(
             favoriteCharacterUi = FavoriteCharacterUI(
-                id = 0,
+                id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
                 enemies = "Amon",
@@ -72,7 +73,7 @@ class FavoritesRepresentativeTest {
         )
         assertEquals(
             FavoriteCharacterUI(
-                id = 0,
+                id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
                 enemies = "Amon",
@@ -86,7 +87,7 @@ class FavoritesRepresentativeTest {
         //user clicks at collapse button
         representative.clickItem(
             favoriteCharacterUi = FavoriteCharacterUI(
-                id = 0,
+                id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
                 enemies = "Amon",
@@ -97,7 +98,7 @@ class FavoritesRepresentativeTest {
         )
         assertEquals(
             FavoriteCharacterUI(
-                id = 0,
+                id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
                 enemies = "Amon",
@@ -111,7 +112,7 @@ class FavoritesRepresentativeTest {
         //user clicks at second item favoritesIcon
         representative.changeFavoriteStatus(
             favoriteCharacterUi = FavoriteCharacterUI(
-                id = 1,
+                id = "1",
                 name = "Unalaq",
                 allies = "Northern Water Tribe",
                 enemies = "Northern Water Tribe",
@@ -127,7 +128,7 @@ class FavoritesRepresentativeTest {
             FavoritesUiState.Base(
                 listOf(
                     FavoriteCharacterUI(
-                        id = 0,
+                        id = "0",
                         name = "Asami Sato",
                         allies = "Hiroshi Sato, Korra",
                         enemies = "Amon",
@@ -148,7 +149,7 @@ private class FakeInteractor : FavoritesInteractor {
         return FavoritesDomain.Base(
             listOf(
                 CharacterModel(
-                    id = 0,
+                    id = "0",
                     name = "Asami Sato",
                     allies = "Hiroshi Sato, Korra",
                     enemies = "Amon",
@@ -156,7 +157,7 @@ private class FakeInteractor : FavoritesInteractor {
                     photoUrl = "url0",
                 ),
                 CharacterModel(
-                    id = 1,
+                    id = "1",
                     name = "Unalaq",
                     allies = "Northern Water Tribe",
                     enemies = "Northern Water Tribe",
@@ -169,7 +170,7 @@ private class FakeInteractor : FavoritesInteractor {
 
     var removeFromFavoritesCalledCount = 0
 
-    override suspend fun removeFromFavorites(id: Int) {
+    override suspend fun removeFromFavorites(id: String) {
         removeFromFavoritesCalledCount++
     }
 }
