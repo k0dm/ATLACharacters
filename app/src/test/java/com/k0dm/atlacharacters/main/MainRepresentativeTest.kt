@@ -1,7 +1,8 @@
 package com.k0dm.atlacharacters.main
 
-import androidx.lifecycle.Observer
-import org.junit.Assert
+import com.k0dm.atlacharacters.characters.presentation.CharactersScreen
+import com.k0dm.atlacharacters.core.UiObserver
+import com.k0dm.atlacharacters.favorites.presentation.FavoritesScreen
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -10,18 +11,18 @@ class MainRepresentativeTest {
     @Test
     fun checkNavigationAndComeBack() {
         val navigation = FakeNavigation()
-        val representative = MainRepresentative(navigation = navigation)
+        val representative = MainRepresentative.Base(navigation = navigation)
 
         //onCreate
         representative.init(isFirstRun = true)
         assertEquals(CharactersScreen, navigation.actualUiState)
 
         //onResume showing CharactersFragment
-        var navigationObserver = object : UiObserver<Screen>{
-            override fun updateUiObserver(observer: Observer<Screen>) = Unit
+        var navigationObserver = object : UiObserver<Screen> {
+            override fun updateUi(uiState: Screen) = Unit
         }
         representative.startGettingUpdates(observer = navigationObserver)
-        Assert.assertEquals(navigationObserver, navigation.actualObserver)
+        assertEquals(navigationObserver, navigation.actualObserver)
         representative.notifyObserved()
         assertEquals(Screen.Empty, navigation.actualUiState)
 
@@ -51,4 +52,6 @@ private class FakeNavigation : Navigation.Mutable {
     override fun updateUiObserver(observer: UiObserver<Screen>) {
         actualObserver = observer
     }
+
+    override fun clear() = Unit
 }

@@ -1,8 +1,6 @@
 package com.k0dm.atlacharacters.core
 
-interface UiObservable<T : Any> : UpdateUiObserver<T>, UpdateUi<T> {
-
-    fun clear()
+interface UiObservable<T : Any> : UpdateUiObserver<T>, UpdateUi<T>, Clear {
 
     abstract class Base<T : Any>(private val emptyUiState: T) : UiObservable<T> {
 
@@ -31,6 +29,7 @@ interface UpdateUi<T : Any> {
 }
 
 interface UiObserver<T : Any> : UpdateUi<T> {
+
     class Empty<T : Any> : UiObserver<T> {
         override fun updateUi(uiState: T) = Unit
     }
