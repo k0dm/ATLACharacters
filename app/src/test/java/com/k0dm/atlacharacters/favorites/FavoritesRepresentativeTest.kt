@@ -2,6 +2,8 @@ package com.k0dm.atlacharacters.favorites
 
 import com.k0dm.atlacharacters.characters.data.CharacterModel
 import com.k0dm.atlacharacters.core.FakeRunAsync
+import com.k0dm.atlacharacters.favorites.domain.FavoritesDomain
+import com.k0dm.atlacharacters.favorites.domain.FavoritesInteractor
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
