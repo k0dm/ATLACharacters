@@ -2,7 +2,11 @@ package com.k0dm.atlacharacters.characters
 
 import com.k0dm.atlacharacters.characters.domain.CharacterDomain
 import com.k0dm.atlacharacters.characters.domain.CharactersInteractor
+import com.k0dm.atlacharacters.characters.presentation.CharactersUiObserver
+import com.k0dm.atlacharacters.characters.presentation.CharacterUiState
+import com.k0dm.atlacharacters.characters.presentation.CharactersUiStateObservable
 import com.k0dm.atlacharacters.core.FakeRunAsync
+import com.k0dm.atlacharacters.core.UiObserver
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -57,7 +61,8 @@ class CharactersRepresentativeTest {
                 affiliation = "Future Industries Sato family Team Avatar",
                 photoUrl = "url0",
                 isFavorite = false
-            )
+            ),
+            observable.actualUiState
         )
 
         //user adds to favorites
@@ -121,15 +126,17 @@ private class FakeInteractor : CharactersInteractor {
 
 private class FakeObservable : CharactersUiStateObservable {
 
-    var actualUiState: CharactersUiState = CharactersUiState.Empty
-    var actualUiObserver: UiObserver<CharactersUiState> = CharactersUiObserver.Empty
+    var actualUiState: CharacterUiState = CharacterUiState.Empty
+    var actualUiObserver: UiObserver<CharacterUiState> = CharactersUiObserver.Empty
 
-    override fun updateUi(uiState: CharactersUiState) {
+    override fun updateUi(uiState: CharacterUiState) {
         actualUiState = uiState
     }
 
-    override fun updateUiObsever(observer: UiObserver<CharactersUiState>) {
+    override fun updateUiObserver(observer: UiObserver<CharacterUiState>) {
         actualUiObserver = observer
     }
+
+    override fun clear() = Unit
 }
 
