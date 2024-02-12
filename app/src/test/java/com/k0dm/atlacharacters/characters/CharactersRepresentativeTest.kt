@@ -48,7 +48,7 @@ class CharactersRepresentativeTest {
         runAsync.pingResult()
         assertEquals(
             CharacterUiState.Base(
-                id = 0,
+                id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
                 enemies = "Amon",
@@ -66,7 +66,7 @@ class CharactersRepresentativeTest {
         runAsync.pingResult()
         assertEquals(
             CharacterUiState.Base(
-                id = 0,
+                id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
                 enemies = "Amon",
@@ -85,7 +85,7 @@ private class FakeInteractor : CharactersInteractor {
     override suspend fun randomCharacter(): CharacterDomain {
         return if (successResponse) {
             CharacterDomain.Success(
-                id = 0,
+                id = "0",
                 name = "Asami Sato",
                 allies = listOf<String>("Hiroshi Sato", "Korra"),
                 enemies = listOf<String>("Amon"),
