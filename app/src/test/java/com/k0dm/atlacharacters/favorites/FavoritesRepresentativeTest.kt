@@ -195,7 +195,7 @@ private class FakeObservable : FavoritesUiStateObservable {
         actualUiObserver = observer
     }
 
-    var actualFavoriteCharacterUi: FavoriteCharacterUi = FavoriteCharacterUi.Empty
+    var actualFavoriteCharacterUi: FavoriteCharacterUi = FavoriteCharacterUi("","","","","","",false)
 
     override fun update(favoriteCharacterUi: FavoriteCharacterUi) {
         actualFavoriteCharacterUi = favoriteCharacterUi
