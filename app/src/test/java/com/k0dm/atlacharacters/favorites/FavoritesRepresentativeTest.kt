@@ -2,8 +2,13 @@ package com.k0dm.atlacharacters.favorites
 
 import com.k0dm.atlacharacters.characters.data.CharacterModel
 import com.k0dm.atlacharacters.core.FakeRunAsync
+import com.k0dm.atlacharacters.core.UiObserver
 import com.k0dm.atlacharacters.favorites.domain.FavoritesDomain
 import com.k0dm.atlacharacters.favorites.domain.FavoritesInteractor
+import com.k0dm.atlacharacters.favorites.presentation.FavoriteCharacterUi
+import com.k0dm.atlacharacters.favorites.presentation.FavoritesUiObserver
+import com.k0dm.atlacharacters.favorites.presentation.FavoritesUiState
+import com.k0dm.atlacharacters.favorites.presentation.FavoritesUiStateObservable
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -38,7 +43,7 @@ class FavoritesRepresentativeTest {
         assertEquals(
             FavoritesUiState.Base(
                 listOf(
-                    FavoriteCharacterUI(
+                    FavoriteCharacterUi(
                         id = "0",
                         name = "Asami Sato",
                         allies = "Hiroshi Sato, Korra",
@@ -47,7 +52,7 @@ class FavoritesRepresentativeTest {
                         photoUrl = "url0",
                         isExpanded = false
                     ),
-                    FavoriteCharacterUI(
+                    FavoriteCharacterUi(
                         id = "1",
                         name = "Unalaq",
                         allies = "Northern Water Tribe",
@@ -63,7 +68,7 @@ class FavoritesRepresentativeTest {
 
         //user clicks at first item
         representative.clickItem(
-            favoriteCharacterUi = FavoriteCharacterUI(
+            FavoriteCharacterUi = FavoriteCharacterUi(
                 id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
@@ -74,7 +79,7 @@ class FavoritesRepresentativeTest {
             )
         )
         assertEquals(
-            FavoriteCharacterUI(
+            FavoriteCharacterUi(
                 id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
@@ -88,7 +93,7 @@ class FavoritesRepresentativeTest {
 
         //user clicks at collapse button
         representative.clickItem(
-            favoriteCharacterUi = FavoriteCharacterUI(
+            FavoriteCharacterUi = FavoriteCharacterUi(
                 id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
@@ -99,7 +104,7 @@ class FavoritesRepresentativeTest {
             )
         )
         assertEquals(
-            FavoriteCharacterUI(
+            FavoriteCharacterUi(
                 id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
@@ -113,7 +118,7 @@ class FavoritesRepresentativeTest {
 
         //user clicks at second item favoritesIcon
         representative.changeFavoriteStatus(
-            favoriteCharacterUi = FavoriteCharacterUI(
+            FavoriteCharacterUi = FavoriteCharacterUi(
                 id = "1",
                 name = "Unalaq",
                 allies = "Northern Water Tribe",
@@ -129,7 +134,7 @@ class FavoritesRepresentativeTest {
         assertEquals(
             FavoritesUiState.Base(
                 listOf(
-                    FavoriteCharacterUI(
+                    FavoriteCharacterUi(
                         id = "0",
                         name = "Asami Sato",
                         allies = "Hiroshi Sato, Korra",
@@ -186,14 +191,16 @@ private class FakeObservable : FavoritesUiStateObservable {
         actualUiState = uiState
     }
 
-    override fun updateUiObsever(observer: UiObserver<FavoritesUiState>) {
+    override fun updateUiObserver(observer: UiObserver<FavoritesUiState>) {
         actualUiObserver = observer
     }
 
     var actualFavoriteCharacterUi: FavoriteCharacterUi = FavoriteCharacterUi.Empty
 
-    override fun update(favoriteCharacterUi: FavoriteCharacterUI) {
-        actualFavoriteCharacterUi++
+    override fun update(favoriteCharacterUi: FavoriteCharacterUi) {
+        actualFavoriteCharacterUi = favoriteCharacterUi
     }
+
+    override fun clear() = Unit
 }
 
