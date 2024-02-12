@@ -10,7 +10,7 @@ interface CharacterUiState {
         private val affiliation: String,
         private val photoUrl: String,
         private var isFavorite: Boolean
-    )
+    ): CharacterUiState
 
     object Loading: CharacterUiState
 

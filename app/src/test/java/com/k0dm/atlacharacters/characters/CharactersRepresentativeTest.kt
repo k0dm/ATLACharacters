@@ -2,8 +2,9 @@ package com.k0dm.atlacharacters.characters
 
 import com.k0dm.atlacharacters.characters.domain.CharacterDomain
 import com.k0dm.atlacharacters.characters.domain.CharactersInteractor
-import com.k0dm.atlacharacters.characters.presentation.CharactersUiObserver
 import com.k0dm.atlacharacters.characters.presentation.CharacterUiState
+import com.k0dm.atlacharacters.characters.presentation.CharactersRepresentative
+import com.k0dm.atlacharacters.characters.presentation.CharactersUiObserver
 import com.k0dm.atlacharacters.characters.presentation.CharactersUiStateObservable
 import com.k0dm.atlacharacters.core.FakeRunAsync
 import com.k0dm.atlacharacters.core.UiObserver
@@ -23,7 +24,7 @@ class CharactersRepresentativeTest {
         observable = FakeObservable()
         interactor = FakeInteractor()
 
-        representative = CharactersRepresentative(
+        representative = CharactersRepresentative.Base(
             observable = observable,
             interactor = interactor,
             runAsync = runAsync
@@ -34,7 +35,7 @@ class CharactersRepresentativeTest {
     fun firstErrorThanSuccessAndAddToFavorite() {
         interactor.successResponse = false
 
-        representative.init()
+        representative.init(isFirstRun = true)
         assertEquals(CharacterUiState.Loading, observable.actualUiState)
         assertEquals(1, runAsync.startCalledCount)
 
@@ -67,7 +68,7 @@ class CharactersRepresentativeTest {
 
         //user adds to favorites
         interactor.isFavorite = true
-        representative.addToFavorite()
+        representative.changeFavoriteStatus()
         assertEquals(1, interactor.changeFavoriteStatusCalledCount)
         assertEquals(3, runAsync.startCalledCount)
 
@@ -139,4 +140,3 @@ private class FakeObservable : CharactersUiStateObservable {
 
     override fun clear() = Unit
 }
-
