@@ -17,7 +17,7 @@ data class CharacterCloud(
     @SerializedName("photoUrl")
     private val photoUrl: String
 ) {
-    fun <T : Any> map(mapper: DataMapper<T>): T =
+    fun <T : Any> map(mapper: CloudMapper<T>): T =
         mapper.map(id, name, allies, enemies, affiliation, photoUrl)
 }
 
