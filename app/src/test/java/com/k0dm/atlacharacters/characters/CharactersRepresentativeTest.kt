@@ -1,5 +1,7 @@
 package com.k0dm.atlacharacters.characters
 
+import com.k0dm.atlacharacters.characters.domain.CharacterDomain
+import com.k0dm.atlacharacters.characters.domain.CharactersInteractor
 import com.k0dm.atlacharacters.core.FakeRunAsync
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -59,6 +61,7 @@ class CharactersRepresentativeTest {
         )
 
         //user adds to favorites
+        interactor.isFavorite = true
         representative.addToFavorite()
         assertEquals(1, interactor.changeFavoriteStatusCalledCount)
         assertEquals(3, runAsync.startCalledCount)
@@ -73,7 +76,8 @@ class CharactersRepresentativeTest {
                 affiliation = "Future Industries Sato family Team Avatar",
                 photoUrl = "url0",
                 isFavorite = true
-            )
+            ),
+            observable.actualUiState
         )
     }
 }
@@ -87,8 +91,8 @@ private class FakeInteractor : CharactersInteractor {
             CharacterDomain.Success(
                 id = "0",
                 name = "Asami Sato",
-                allies = listOf<String>("Hiroshi Sato", "Korra"),
-                enemies = listOf<String>("Amon"),
+                allies = "Hiroshi Sato, Korra",
+                enemies = "Amon",
                 affiliation = "Future Industries Sato family Team Avatar",
                 photoUrl = "url0",
                 isFavorite = false
@@ -99,9 +103,19 @@ private class FakeInteractor : CharactersInteractor {
     }
 
     var changeFavoriteStatusCalledCount = 0
+    var isFavorite = false
 
-    override suspend fun changeFavoriteStatus() {
+    override suspend fun changeFavoriteStatus(): CharacterDomain {
         changeFavoriteStatusCalledCount++
+        return CharacterDomain.Success(
+            id = "0",
+            name = "Asami Sato",
+            allies = "Hiroshi Sato, Korra",
+            enemies = "Amon",
+            affiliation = "Future Industries Sato family Team Avatar",
+            photoUrl = "url0",
+            isFavorite = true
+        )
     }
 }
 

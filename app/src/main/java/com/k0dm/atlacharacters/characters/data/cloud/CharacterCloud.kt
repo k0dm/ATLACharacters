@@ -20,4 +20,3 @@ data class CharacterCloud(
     fun <T : Any> map(mapper: CloudMapper<T>): T =
         mapper.map(id, name, allies, enemies, affiliation, photoUrl)
 }
-

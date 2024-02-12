@@ -1,23 +1,20 @@
 package com.k0dm.atlacharacters.characters.data.cache
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.k0dm.atlacharacters.characters.data.CharacterModel
 
+@Dao
 interface CharactersCacheDataSource {
 
-    suspend fun characters(): List<CharacterModel>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun save(character: CharacterCache)
 
-    suspend fun save(characterModel: CharacterModel)
+    @Query("SELECT * FROM characters_table")
+    suspend fun characters(): List<CharacterCache>
 
+    @Query("DELETE FROM characters_table WHERE id = :id")
     suspend fun delete(id: String)
-
-    class Base(private val dao: CharactersDao): CharactersCacheDataSource {
-
-        override suspend fun characters(): List<CharacterModel> {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun save(characterModel: CharacterModel) = dao.save(characterModel.map)
-
-        override suspend fun delete(id: String) = dao.delete(id)
-    }
 }
