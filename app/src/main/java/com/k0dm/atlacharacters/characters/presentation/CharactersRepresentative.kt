@@ -30,7 +30,7 @@ interface CharactersRepresentative : Representative<CharacterUiState> {
             runAsync({
                 interactor.randomCharacter()
             }) { characterDomain ->
-                characterDomain.map(uiMapper)
+                observable.updateUi(characterDomain.map(uiMapper))
             }
         }
 
@@ -38,7 +38,7 @@ interface CharactersRepresentative : Representative<CharacterUiState> {
             runAsync({
                 interactor.changeFavoriteStatus()
             }) { characterDomain ->
-                characterDomain.map(uiMapper)
+                observable.updateUi(characterDomain.map(uiMapper))
             }
         }
 

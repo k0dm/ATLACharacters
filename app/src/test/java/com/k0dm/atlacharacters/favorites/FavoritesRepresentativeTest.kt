@@ -6,6 +6,7 @@ import com.k0dm.atlacharacters.core.UiObserver
 import com.k0dm.atlacharacters.favorites.domain.FavoritesDomain
 import com.k0dm.atlacharacters.favorites.domain.FavoritesInteractor
 import com.k0dm.atlacharacters.favorites.presentation.FavoriteCharacterUi
+import com.k0dm.atlacharacters.favorites.presentation.FavoritesRepresentative
 import com.k0dm.atlacharacters.favorites.presentation.FavoritesUiObserver
 import com.k0dm.atlacharacters.favorites.presentation.FavoritesUiState
 import com.k0dm.atlacharacters.favorites.presentation.FavoritesUiStateObservable
@@ -25,7 +26,7 @@ class FavoritesRepresentativeTest {
         observable = FakeObservable()
         interactor = FakeInteractor()
         runAsync = FakeRunAsync()
-        representative = FavoritesRepresentative(
+        representative = FavoritesRepresentative.Base(
             observable = observable,
             interactor = interactor,
             runAsync = runAsync
@@ -35,7 +36,7 @@ class FavoritesRepresentativeTest {
     @Test
     fun expandAndCollapseItemThenRemoveFromFavorites() {
 
-        representative.init()
+        representative.init(isFirstRun = true)
         assertEquals(FavoritesUiState.Empty, observable.actualUiState)
         assertEquals(1, runAsync.startCalledCount)
 
@@ -68,7 +69,7 @@ class FavoritesRepresentativeTest {
 
         //user clicks at first item
         representative.clickItem(
-            FavoriteCharacterUi = FavoriteCharacterUi(
+            favoriteCharacterUi = FavoriteCharacterUi(
                 id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
@@ -93,7 +94,7 @@ class FavoritesRepresentativeTest {
 
         //user clicks at collapse button
         representative.clickItem(
-            FavoriteCharacterUi = FavoriteCharacterUi(
+            favoriteCharacterUi = FavoriteCharacterUi(
                 id = "0",
                 name = "Asami Sato",
                 allies = "Hiroshi Sato, Korra",
@@ -118,7 +119,7 @@ class FavoritesRepresentativeTest {
 
         //user clicks at second item favoritesIcon
         representative.changeFavoriteStatus(
-            FavoriteCharacterUi = FavoriteCharacterUi(
+            favoriteCharacterUi = FavoriteCharacterUi(
                 id = "1",
                 name = "Unalaq",
                 allies = "Northern Water Tribe",

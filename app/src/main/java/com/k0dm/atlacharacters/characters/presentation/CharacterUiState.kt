@@ -39,6 +39,7 @@ interface CharacterUiState {
     }
 
     data class Error(private val message: String) : CharacterUiState {
+
         override fun show(binding: FragmentCharactersBinding) = with(binding) {
             loadingProgressBar.visibility = View.GONE
             loadingDataTextView.visibility = View.GONE

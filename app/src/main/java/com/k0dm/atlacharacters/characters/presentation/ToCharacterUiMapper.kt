@@ -14,6 +14,5 @@ object ToCharacterUiMapper : DomainMapper<CharacterUiState> {
         isFavorite: Boolean
     ) = CharacterUiState.Base(id, name, allies, enemies, affiliation, photoUrl, isFavorite)
 
-
     override fun mapError(message: String) = CharacterUiState.Error(message)
 }
