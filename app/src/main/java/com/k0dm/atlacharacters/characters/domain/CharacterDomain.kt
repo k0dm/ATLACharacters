@@ -18,8 +18,8 @@ interface CharacterDomain {
             mapper.mapSuccess(id, name, allies, enemies, affiliation, photoUrl, isFavorite)
     }
 
-
     data class Error(private val message: String) : CharacterDomain {
+
         override fun <T : Any> map(mapper: DomainMapper<T>): T  =
             mapper.mapError(message)
     }

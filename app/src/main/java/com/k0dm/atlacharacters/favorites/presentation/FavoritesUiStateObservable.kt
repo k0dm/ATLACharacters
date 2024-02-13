@@ -9,7 +9,7 @@ interface FavoritesUiStateObservable : UiObservable<FavoritesUiState> {
     class Base : FavoritesUiStateObservable, UiObservable.Base<FavoritesUiState>(FavoritesUiState.Empty) {
 
         override fun update(favoriteCharacterUi: FavoriteCharacterUi) {
-            TODO("Not yet implemented")
+            updateUi(cachedUiState.changeItem(favoriteCharacterUi))
         }
     }
 }

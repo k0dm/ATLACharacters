@@ -25,9 +25,9 @@ interface CharactersInteractor {
                 cacheCharacterModel = repository.randomCharacter()
                 cacheFavoriteCharacters = repository.allFavoritesCharacters()
                 val mapper = if (cacheFavoriteCharacters!!.contains(cacheCharacterModel)) {
-                    toSuccessFavoriteMapper
-                } else {
                     toSuccessNotFavoriteMapper
+                } else {
+                    toSuccessFavoriteMapper
                 }
                 cacheCharacterModel!!.map(mapper)
             } catch (e: Exception) {
