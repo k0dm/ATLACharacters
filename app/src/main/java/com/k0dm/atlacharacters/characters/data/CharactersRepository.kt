@@ -18,8 +18,8 @@ interface CharactersRepository {
     class Base(
         private val cloudDataSource: CharactersCloudDataSource,
         private val cacheDataSource: CharactersCacheDataSource,
-        private val cloudMapper: CloudMapper<CharacterModel>,
-        private val dataMapper: DataMapper<CharacterCache>
+        private val cloudMapper: CloudMapper<CharacterModel> = ToCharacterModelMapper,
+        private val dataMapper: DataMapper<CharacterCache> = ToCharacterCacheMapper
     ) : CharactersRepository {
 
         override suspend fun randomCharacter(): CharacterModel {
