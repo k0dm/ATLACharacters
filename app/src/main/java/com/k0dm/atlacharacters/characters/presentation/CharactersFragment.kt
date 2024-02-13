@@ -39,6 +39,20 @@ class CharactersFragment : Fragment() {
         representative.init(savedInstanceState == null)
     }
 
+    override fun onResume() {
+        super.onResume()
+        representative.startGettingUpdates(object: CharactersUiObserver {
+            override fun updateUi(uiState: CharacterUiState) {
+                uiState.show(binding)
+            }
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        representative.stopGettingUpdates()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

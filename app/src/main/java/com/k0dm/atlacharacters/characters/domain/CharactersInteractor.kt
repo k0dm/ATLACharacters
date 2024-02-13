@@ -13,8 +13,8 @@ interface CharactersInteractor {
 
     class Base(
         private val repository: CharactersRepository,
-        private val toSuccessFavoriteMapper: DataMapper<CharacterDomain>,
-        private val toSuccessNotFavoriteMapper: DataMapper<CharacterDomain>,
+        private val toSuccessFavoriteMapper: DataMapper<CharacterDomain> = ToCharacterDomainMapper(true),
+        private val toSuccessNotFavoriteMapper: DataMapper<CharacterDomain> = ToCharacterDomainMapper(false),
     ) : CharactersInteractor {
 
         private var cacheCharacterModel: CharacterModel? = null
