@@ -21,7 +21,8 @@
             android:id="@+id/characterCollapsedImageView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/mako_image"
+            android:scaleType="fitXY"
+            android:src="@drawable/last_airbender_and_legend_of_korra"
             app:shapeAppearanceOverlay="@drawable/corner_radius_10dp"
             android:importantForAccessibility="no" />
     </androidx.cardview.widget.CardView>

@@ -1,7 +1,6 @@
 package com.k0dm.atlacharacters.characters.data.cloud
 
 import com.google.gson.annotations.SerializedName
-import com.k0dm.atlacharacters.characters.data.DataMapper
 
 data class CharacterCloud(
     @SerializedName("_id")
@@ -13,10 +12,10 @@ data class CharacterCloud(
     @SerializedName("enemies")
     private val enemies: List<String>,
     @SerializedName("affiliation")
-    private val affiliation: String,
+    private val affiliation: String?,
     @SerializedName("photoUrl")
     private val photoUrl: String
 ) {
     fun <T : Any> map(mapper: CloudMapper<T>): T =
-        mapper.map(id, name, allies, enemies, affiliation, photoUrl)
+        mapper.map(id, name, allies, enemies, affiliation ?: "", photoUrl)
 }
