@@ -19,11 +19,26 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.bottomNavigation.setOnItemReselectedListener { item->
+        representative = provideRepresentative(MainRepresentative::class.java)
+
+        binding.bottomNavigation.setOnItemSelectedListener {item->
             when(item.itemId) {
-                R.id.itemCharacters -> representative.navigate(CharactersScreen)
-                R.id.itemFavorites -> representative.navigate(FavoritesScreen)
+                R.id.itemCharacters ->{
+                    representative.navigate(CharactersScreen)
+                    true
+                }
+                R.id.itemFavorites ->{
+                    representative.navigate(FavoritesScreen)
+                    true
+                }
+                else -> {
+                    false
+                }
             }
+        }
+
+        binding.bottomNavigation.setOnItemReselectedListener { item->
+
         }
 
         representative.init(savedInstanceState == null)

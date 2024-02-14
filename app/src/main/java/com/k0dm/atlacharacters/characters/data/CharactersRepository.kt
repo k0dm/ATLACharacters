@@ -23,7 +23,7 @@ interface CharactersRepository {
     ) : CharactersRepository {
 
         override suspend fun randomCharacter(): CharacterModel {
-            val characterCloud = cloudDataSource.fetchRandomCharacter().execute().body()!!
+            val characterCloud = cloudDataSource.fetchRandomCharacter().execute().body()!![0]
             return characterCloud.map(cloudMapper)
         }
 

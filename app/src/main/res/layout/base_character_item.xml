@@ -8,6 +8,8 @@
     android:background="@drawable/corner_radius_10dp"
     android:backgroundTint="@color/background_category"
     android:orientation="horizontal"
+    android:layout_marginBottom="8dp"
+    android:elevation="4dp"
     android:padding="8dp">
 
     <androidx.cardview.widget.CardView
@@ -31,12 +33,14 @@
 
     <TextView
         android:id="@+id/characterNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="24sp"
+        android:maxLines="1"
         tools:text="Mako" />
 
     <Space

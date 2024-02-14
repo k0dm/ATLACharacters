@@ -6,6 +6,6 @@ import retrofit2.http.GET
 interface CharactersCloudDataSource {
 
     @GET("/api/v1/characters/random")
-    fun fetchRandomCharacter(): Call<CharacterCloud>
+    fun fetchRandomCharacter(): Call<List<CharacterCloud>>
 }
 

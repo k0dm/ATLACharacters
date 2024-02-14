@@ -1,6 +1,7 @@
 package com.k0dm.atlacharacters.characters.presentation
 
 import android.view.View
+import com.k0dm.atlacharacters.R
 import com.k0dm.atlacharacters.databinding.FragmentCharactersBinding
 
 interface CharacterUiState {
@@ -20,8 +21,14 @@ interface CharacterUiState {
         override fun show(binding: FragmentCharactersBinding) = with(binding) {
             loadingLayout.visibility = View.GONE
             favoriteImageView.visibility = View.VISIBLE
-            mainLayout.visibility = View.VISIBLE
+            favoriteImageView.setImageResource(if (isFavorite) R.drawable.favorite else R.drawable.not_favorite)
+            contentLayout.visibility = View.VISIBLE
             actionButton.visibility = View.VISIBLE
+            actionButton.text = "Next"
+            nameTextView.text = name
+            alliesTextView.text = allies
+            enemiesTextView.text = enemies
+            affiliationTextView.text = affiliation
         }
     }
 
@@ -33,7 +40,7 @@ interface CharacterUiState {
             loadingDataTextView.visibility = View.VISIBLE
             errorTextView.visibility = View.GONE
             favoriteImageView.visibility = View.GONE
-            mainLayout.visibility = View.GONE
+            contentLayout.visibility = View.GONE
             actionButton.visibility = View.GONE
         }
     }
@@ -44,7 +51,9 @@ interface CharacterUiState {
             loadingProgressBar.visibility = View.GONE
             loadingDataTextView.visibility = View.GONE
             errorTextView.visibility = View.VISIBLE
+            errorTextView.text = message
             actionButton.visibility = View.VISIBLE
+            actionButton.text = "Retry"
         }
     }
 
