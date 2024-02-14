@@ -1,8 +1,10 @@
 package com.k0dm.atlacharacters.characters.presentation
 
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.k0dm.atlacharacters.R
 import com.k0dm.atlacharacters.databinding.FragmentCharactersBinding
+import com.squareup.picasso.Picasso
 
 interface CharacterUiState {
 
@@ -23,12 +25,17 @@ interface CharacterUiState {
             favoriteImageView.visibility = View.VISIBLE
             favoriteImageView.setImageResource(if (isFavorite) R.drawable.favorite else R.drawable.not_favorite)
             contentLayout.visibility = View.VISIBLE
-            actionButton.visibility = View.VISIBLE
-            actionButton.text = "Next"
+            Picasso.get().load(photoUrl).resize(333, 250)
+                .placeholder(R.drawable.last_airbender_and_legend_of_korra).into(characterImageView)
             nameTextView.text = name
             alliesTextView.text = allies
             enemiesTextView.text = enemies
             affiliationTextView.text = affiliation
+            actionButton.visibility = View.VISIBLE
+            actionButton.setTextColor(ContextCompat.getColor(actionButton.context, R.color.white))
+            actionButton.setBackgroundColor(ContextCompat.getColor(actionButton.context, R.color.secondary_container))
+            actionButton.setStrokeWidthResource(R.dimen.next_button_stroke_width)
+            actionButton.text = "Next"
         }
     }
 
@@ -54,6 +61,9 @@ interface CharacterUiState {
             errorTextView.text = message
             actionButton.visibility = View.VISIBLE
             actionButton.text = "Retry"
+            actionButton.setTextColor(ContextCompat.getColor(actionButton.context, R.color.secondary_container))
+            actionButton.setBackgroundColor(ContextCompat.getColor(actionButton.context, R.color.background))
+            actionButton.setStrokeWidthResource(R.dimen.retry_button_stroke_width)
         }
     }
 
