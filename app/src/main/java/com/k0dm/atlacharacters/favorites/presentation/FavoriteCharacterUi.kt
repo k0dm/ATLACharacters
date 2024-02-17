@@ -29,14 +29,16 @@ data class FavoriteCharacterUi(
 
     fun show(binding: BaseCharacterItemBinding) {
         binding.characterNameTextView.text = name
-        Picasso.get().load(photoUrl).placeholder(R.drawable.last_airbender_and_legend_of_korra).into(binding.characterCollapsedImageView)
+        Picasso.get().load(photoUrl).placeholder(R.drawable.last_airbender_and_legend_of_korra)
+            .into(binding.characterCollapsedImageView)
     }
 
-    fun show(binding: ExpandedCharacterItemBinding) = with(binding){
+    fun show(binding: ExpandedCharacterItemBinding) = with(binding) {
         nameTextView.text = name
-        alliesTextView.text =allies
-        enemiesTextView.text=enemies
-        affiliationTextView.text=affiliation
-        Picasso.get().load(photoUrl).into(characterImageView)
+        alliesTextView.text = allies
+        enemiesTextView.text = enemies
+        affiliationTextView.text = affiliation
+        Picasso.get().load(photoUrl).placeholder(R.drawable.last_airbender_and_legend_of_korra)
+            .into(characterImageView)
     }
 }

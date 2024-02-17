@@ -4,5 +4,12 @@ import com.k0dm.atlacharacters.core.UiObservable
 
 interface CharactersUiStateObservable: UiObservable<CharacterUiState>  {
 
-    class Base: CharactersUiStateObservable, UiObservable.Base<CharacterUiState>(CharacterUiState.Empty)
+    fun save(uiStateStore: UiStateStore)
+
+    class Base: CharactersUiStateObservable, UiObservable.Base<CharacterUiState>(CharacterUiState.Empty) {
+
+        override fun save(uiStateStore: UiStateStore) {
+            uiStateStore.save(cachedUiState)
+        }
+    }
 }

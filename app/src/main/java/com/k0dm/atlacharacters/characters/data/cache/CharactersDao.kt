@@ -16,4 +16,13 @@ interface CharactersDao {
 
     @Query("DELETE FROM characters_table WHERE id = :id")
     suspend fun delete(id: String)
+
+    @Query("DELETE FROM temp_characters_table")
+    suspend fun clearTemp()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveTemp(tempCharacter: TempCharacter)
+
+    @Query("SELECT * FROM TEMP_CHARACTERS_TABLE")
+    suspend fun temp(): List<TempCharacter>
 }

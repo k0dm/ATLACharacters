@@ -15,7 +15,7 @@ import com.example.recyclerviewmatcher.RecyclerViewMatcher
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 
-class FavoritesPage {
+internal class FavoritesPage {
 
     private val favoritesLayoutId = R.id.favoritesLayout
     private val favoritesLayout = onView(

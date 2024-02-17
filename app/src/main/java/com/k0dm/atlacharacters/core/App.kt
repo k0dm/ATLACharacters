@@ -6,12 +6,9 @@ import com.k0dm.atlacharacters.characters.data.CharactersRepository
 import com.k0dm.atlacharacters.characters.data.cache.CharactersCacheDataSource
 import com.k0dm.atlacharacters.characters.data.cloud.CharactersCloudDataSource
 import com.k0dm.atlacharacters.characters.domain.CharactersInteractor
-import com.k0dm.atlacharacters.characters.presentation.CharactersRepresentative
 import com.k0dm.atlacharacters.characters.presentation.CharactersUiStateObservable
 import com.k0dm.atlacharacters.favorites.domain.FavoritesInteractor
-import com.k0dm.atlacharacters.favorites.presentation.FavoritesRepresentative
 import com.k0dm.atlacharacters.favorites.presentation.FavoritesUiStateObservable
-import com.k0dm.atlacharacters.main.MainRepresentative
 import com.k0dm.atlacharacters.main.Navigation
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,39 +21,44 @@ class App : Application(), ProvideRepresentative {
 
     override fun onCreate() {
         super.onCreate()
-        factory = ProvideRepresentative.Factory(ProvideRepresentative.MakeRepresentative(this))
+        factory = ProvideRepresentative.Factory(ProvideRepresentative.MakeRepresentative(Core.Base(this)))
     }
 
     override fun <T : Representative<*>> provideRepresentative(clazz: Class<out T>) =
         factory.provideRepresentative(clazz)
 }
 
-@Suppress("UNCHECKED_CAST")
-interface ProvideRepresentative {
+interface Core {
 
-    fun <T : Representative<*>> provideRepresentative(clazz: Class<out T>): T
+    fun navigation(): Navigation.Mutable
 
-    class Factory(private val makeRepresentative: ProvideRepresentative) : ProvideRepresentative {
+    fun charactersUiStateObservable(): CharactersUiStateObservable
 
-        private val representativeStore =
-            mutableMapOf<Class<out Representative<*>>, Representative<*>>()
+    fun favoritesUiStateObservable(): FavoritesUiStateObservable
 
-        override fun <T : Representative<*>> provideRepresentative(clazz: Class<out T>): T {
-            return if (representativeStore.contains(clazz)) {
-                representativeStore[clazz]
-            } else {
-                val representative = makeRepresentative.provideRepresentative(clazz)
-                representativeStore[clazz] = representative
-                representative
-            } as T
-        }
-    }
+    fun runAsync(): RunAsync
 
-    class MakeRepresentative(context: Context) : ProvideRepresentative {
+    fun charactersInteractor(): CharactersInteractor
+
+    fun favoritesInteractor(): FavoritesInteractor
+
+    abstract class Abstract(): Core {
 
         private val navigation = Navigation.Base()
         private val charactersUiStateObservable = CharactersUiStateObservable.Base()
         private val favoritesUiStateObservable = FavoritesUiStateObservable.Base()
+        private val runAsync = RunAsync.Base()
+
+        override fun navigation() = navigation
+
+        override fun charactersUiStateObservable() = charactersUiStateObservable
+
+        override fun favoritesUiStateObservable() = favoritesUiStateObservable
+
+        override fun runAsync() = runAsync
+    }
+
+    class Base(context: Context): Abstract() {
 
         val logging = HttpLoggingInterceptor().apply {
             setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -73,32 +75,20 @@ interface ProvideRepresentative {
                 cacheDataSource = cacheDataSource
             )
         )
+        private val favoritesInteractor = FavoritesInteractor.Base(cacheDataSource = cacheDataSource)
 
-        private val favoritesInteractor =
-            FavoritesInteractor.Base(cacheDataSource = cacheDataSource)
+        override fun charactersInteractor() = charactersInteractor
 
-        private val runAsync = RunAsync.Base()
+        override fun favoritesInteractor() = favoritesInteractor
+    }
+
+    class Mock() : Abstract() {
 
 
-        override fun <T : Representative<*>> provideRepresentative(clazz: Class<out T>): T {
+        override fun charactersInteractor() = CharactersInteractor.MockForUiTests()
 
-            return when (clazz) {
-                MainRepresentative::class.java -> MainRepresentative.Base(navigation)
-
-                CharactersRepresentative::class.java -> CharactersRepresentative.Base(
-                    charactersUiStateObservable,
-                    charactersInteractor,
-                    runAsync
-                )
-
-                FavoritesRepresentative::class.java -> FavoritesRepresentative.Base(
-                    favoritesUiStateObservable,
-                    favoritesInteractor,
-                    runAsync
-                )
-
-                else -> throw IllegalStateException("No such representative with clazz:$clazz")
-            } as T
+        override fun favoritesInteractor(): FavoritesInteractor {
+            TODO("Not yet implemented")
         }
     }
 }

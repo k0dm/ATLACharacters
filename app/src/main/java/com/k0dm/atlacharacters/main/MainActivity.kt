@@ -3,11 +3,9 @@ package com.k0dm.atlacharacters.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.k0dm.atlacharacters.R
-import com.k0dm.atlacharacters.characters.presentation.CharactersScreen
 import com.k0dm.atlacharacters.core.ProvideRepresentative
 import com.k0dm.atlacharacters.core.Representative
 import com.k0dm.atlacharacters.databinding.ActivityMainBinding
-import com.k0dm.atlacharacters.favorites.presentation.FavoritesScreen
 
 class MainActivity : AppCompatActivity(), ProvideRepresentative {
 
@@ -21,27 +19,25 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
 
         representative = provideRepresentative(MainRepresentative::class.java)
 
-        binding.bottomNavigation.setOnItemSelectedListener {item->
-            when(item.itemId) {
-                R.id.itemCharacters ->{
-                    representative.navigate(CharactersScreen)
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.itemCharacters -> {
+                    representative.navigateToCharacters()
                     true
                 }
-                R.id.itemFavorites ->{
-                    representative.navigate(FavoritesScreen)
+
+                R.id.itemFavorites -> {
+                    representative.navigateToFavorites()
                     true
                 }
+
                 else -> {
                     false
                 }
             }
         }
 
-        binding.bottomNavigation.setOnItemReselectedListener { item->
-
-        }
-
-        representative.init(savedInstanceState == null)
+        representative.init(savedInstanceState==null)
     }
 
     override fun onResume() {

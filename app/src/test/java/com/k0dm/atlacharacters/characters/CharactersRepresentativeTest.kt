@@ -6,6 +6,7 @@ import com.k0dm.atlacharacters.characters.presentation.CharacterUiState
 import com.k0dm.atlacharacters.characters.presentation.CharactersRepresentative
 import com.k0dm.atlacharacters.characters.presentation.CharactersUiObserver
 import com.k0dm.atlacharacters.characters.presentation.CharactersUiStateObservable
+import com.k0dm.atlacharacters.characters.presentation.UiStateStore
 import com.k0dm.atlacharacters.core.FakeRunAsync
 import com.k0dm.atlacharacters.core.UiObserver
 import org.junit.Assert.assertEquals
@@ -18,11 +19,14 @@ class CharactersRepresentativeTest {
     private lateinit var observable: FakeObservable
     private lateinit var interactor: FakeInteractor
     private lateinit var runAsync: FakeRunAsync
+    private lateinit var uiStateStore: FakeUiStateStore
 
     @Before
     fun setUp() {
         observable = FakeObservable()
         interactor = FakeInteractor()
+        runAsync = FakeRunAsync()
+        uiStateStore = FakeUiStateStore()
 
         representative = CharactersRepresentative.Base(
             observable = observable,
@@ -34,8 +38,9 @@ class CharactersRepresentativeTest {
     @Test
     fun firstErrorThanSuccessAndAddToFavorite() {
         interactor.successResponse = false
+        uiStateStore.isFirstRun = true
 
-        representative.init(isFirstRun = true)
+        representative.init(uiStateStore)
         assertEquals(CharacterUiState.Loading, observable.actualUiState)
         assertEquals(1, runAsync.startCalledCount)
 
@@ -123,6 +128,10 @@ private class FakeInteractor : CharactersInteractor {
             isFavorite = true
         )
     }
+
+    override suspend fun actualData(): CharacterDomain {
+        throw IllegalStateException("Don't use in Unit test")
+    }
 }
 
 private class FakeObservable : CharactersUiStateObservable {
@@ -134,9 +143,27 @@ private class FakeObservable : CharactersUiStateObservable {
         actualUiState = uiState
     }
 
+    override fun save(uiStateStore: UiStateStore) {
+        uiStateStore.save(actualUiState)
+    }
+
     override fun updateUiObserver(observer: UiObserver<CharacterUiState>) {
         actualUiObserver = observer
     }
 
     override fun clear() = Unit
+}
+
+private class FakeUiStateStore: UiStateStore {
+
+    var savedUiState: CharacterUiState = CharacterUiState.Empty
+    var isFirstRun = false
+
+    override fun isEmpty()  = isFirstRun
+
+    override fun save(characterUiState: CharacterUiState) {
+        savedUiState = characterUiState
+    }
+
+    override fun restore() = savedUiState
 }

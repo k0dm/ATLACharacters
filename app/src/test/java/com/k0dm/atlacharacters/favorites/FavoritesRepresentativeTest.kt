@@ -36,7 +36,7 @@ class FavoritesRepresentativeTest {
     @Test
     fun expandAndCollapseItemThenRemoveFromFavorites() {
 
-        representative.init(isFirstRun = true)
+        representative.init()
         assertEquals(FavoritesUiState.Empty, observable.actualUiState)
         assertEquals(1, runAsync.startCalledCount)
 
@@ -79,17 +79,31 @@ class FavoritesRepresentativeTest {
                 isExpanded = false
             )
         )
+
         assertEquals(
-            FavoriteCharacterUi(
-                id = "0",
-                name = "Asami Sato",
-                allies = "Hiroshi Sato, Korra",
-                enemies = "Amon",
-                affiliation = "Future Industries Sato family Team Avatar",
-                photoUrl = "url0",
-                isExpanded = true
+            FavoritesUiState.Base(
+                listOf(
+                    FavoriteCharacterUi(
+                        id = "0",
+                        name = "Asami Sato",
+                        allies = "Hiroshi Sato, Korra",
+                        enemies = "Amon",
+                        affiliation = "Future Industries Sato family Team Avatar",
+                        photoUrl = "url0",
+                        isExpanded = true
+                    ),
+                    FavoriteCharacterUi(
+                        id = "1",
+                        name = "Unalaq",
+                        allies = "Northern Water Tribe",
+                        enemies = "Northern Water Tribe",
+                        affiliation = "Northern Water Tribe Southern Water Tribe Red Lotus (formerly) Vaatu",
+                        photoUrl = "url1",
+                        isExpanded = false
+                    )
+                )
             ),
-            observable.actualFavoriteCharacterUi
+            observable.actualUiState
         )
 
         //user clicks at collapse button
@@ -105,16 +119,29 @@ class FavoritesRepresentativeTest {
             )
         )
         assertEquals(
-            FavoriteCharacterUi(
-                id = "0",
-                name = "Asami Sato",
-                allies = "Hiroshi Sato, Korra",
-                enemies = "Amon",
-                affiliation = "Future Industries Sato family Team Avatar",
-                photoUrl = "url0",
-                isExpanded = false
+            FavoritesUiState.Base(
+                listOf(
+                    FavoriteCharacterUi(
+                        id = "0",
+                        name = "Asami Sato",
+                        allies = "Hiroshi Sato, Korra",
+                        enemies = "Amon",
+                        affiliation = "Future Industries Sato family Team Avatar",
+                        photoUrl = "url0",
+                        isExpanded = false
+                    ),
+                    FavoriteCharacterUi(
+                        id = "1",
+                        name = "Unalaq",
+                        allies = "Northern Water Tribe",
+                        enemies = "Northern Water Tribe",
+                        affiliation = "Northern Water Tribe Southern Water Tribe Red Lotus (formerly) Vaatu",
+                        photoUrl = "url1",
+                        isExpanded = false
+                    )
+                )
             ),
-            observable.actualFavoriteCharacterUi
+            observable.actualUiState
         )
 
         //user clicks at second item favoritesIcon
@@ -151,35 +178,63 @@ class FavoritesRepresentativeTest {
     }
 }
 
-private class FakeInteractor : FavoritesInteractor {
+private class FakeInteractor() : FavoritesInteractor {
 
-    override suspend fun allFavorites(): FavoritesDomain {
-        return FavoritesDomain.Base(
-            listOf(
-                CharacterModel(
-                    id = "0",
-                    name = "Asami Sato",
-                    allies = "Hiroshi Sato, Korra",
-                    enemies = "Amon",
-                    affiliation = "Future Industries Sato family Team Avatar",
-                    photoUrl = "url0",
-                ),
-                CharacterModel(
-                    id = "1",
-                    name = "Unalaq",
-                    allies = "Northern Water Tribe",
-                    enemies = "Northern Water Tribe",
-                    affiliation = "Northern Water Tribe Southern Water Tribe Red Lotus (formerly) Vaatu",
-                    photoUrl = "url1"
-                )
+
+    private var savedFavorites = FavoritesDomain.Base(
+        listOf(
+            CharacterModel(
+                id = "0",
+                name = "Asami Sato",
+                allies = "Hiroshi Sato, Korra",
+                enemies = "Amon",
+                affiliation = "Future Industries Sato family Team Avatar",
+                photoUrl = "url0",
+            ),
+            CharacterModel(
+                id = "1",
+                name = "Unalaq",
+                allies = "Northern Water Tribe",
+                enemies = "Northern Water Tribe",
+                affiliation = "Northern Water Tribe Southern Water Tribe Red Lotus (formerly) Vaatu",
+                photoUrl = "url1"
             )
         )
-    }
+    )
+
+    override suspend fun allFavorites() = savedFavorites
 
     var removeFromFavoritesCalledCount = 0
 
     override suspend fun removeFromFavorites(id: String) {
         removeFromFavoritesCalledCount++
+        if (id == "0") {
+            savedFavorites = FavoritesDomain.Base(
+                listOf(
+                    CharacterModel(
+                        id = "1",
+                        name = "Unalaq",
+                        allies = "Northern Water Tribe",
+                        enemies = "Northern Water Tribe",
+                        affiliation = "Northern Water Tribe Southern Water Tribe Red Lotus (formerly) Vaatu",
+                        photoUrl = "url1"
+                    )
+                )
+            )
+        } else if (id == "1") {
+            savedFavorites = FavoritesDomain.Base(
+                listOf(
+                    CharacterModel(
+                        id = "0",
+                        name = "Asami Sato",
+                        allies = "Hiroshi Sato, Korra",
+                        enemies = "Amon",
+                        affiliation = "Future Industries Sato family Team Avatar",
+                        photoUrl = "url0",
+                    )
+                )
+            )
+        }
     }
 }
 
@@ -196,12 +251,9 @@ private class FakeObservable : FavoritesUiStateObservable {
         actualUiObserver = observer
     }
 
-    var actualFavoriteCharacterUi: FavoriteCharacterUi = FavoriteCharacterUi("","","","","","",false)
-
     override fun update(favoriteCharacterUi: FavoriteCharacterUi) {
-        actualFavoriteCharacterUi = favoriteCharacterUi
+        actualUiState = actualUiState.changeItem(favoriteCharacterUi)
     }
 
     override fun clear() = Unit
 }
-

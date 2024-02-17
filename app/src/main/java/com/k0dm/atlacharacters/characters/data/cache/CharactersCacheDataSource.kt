@@ -5,11 +5,15 @@ import androidx.room.Room
 
 interface CharactersCacheDataSource {
 
-    suspend fun save(character: CharacterCache)
+    suspend fun saveFavorite(character: CharacterCache)
 
     suspend fun characters(): List<CharacterCache>
 
     suspend fun delete(id: String)
+
+    suspend fun saveTemp(tempCharacter: TempCharacter)
+
+    suspend fun temp(): TempCharacter
 
     class Base(context: Context): CharactersCacheDataSource {
 
@@ -25,7 +29,7 @@ interface CharactersCacheDataSource {
             database.charactersDao()
         }
 
-        override suspend fun save(character: CharacterCache) {
+        override suspend fun saveFavorite(character: CharacterCache) {
             dao.save(character)
         }
 
@@ -34,6 +38,13 @@ interface CharactersCacheDataSource {
         override suspend fun delete(id: String) {
             dao.delete(id)
         }
+
+        override suspend fun saveTemp(tempCharacter: TempCharacter) {
+            dao.clearTemp()
+            dao.saveTemp(tempCharacter)
+        }
+
+        override suspend fun temp() = dao.temp()[0]
     }
 }
 

@@ -8,7 +8,7 @@ interface FavoritesUiState {
 
     fun update(adapter: FavoritesAdapter)
 
-    class Base(private val favoritesCharacters: List<FavoriteCharacterUi>) : FavoritesUiState {
+    data class Base(private val favoritesCharacters: List<FavoriteCharacterUi>) : FavoritesUiState {
 
         override fun changeItem(favoritesCharacterUi: FavoriteCharacterUi): FavoritesUiState {
             val newFavoriteCharactersList = ArrayList(favoritesCharacters)

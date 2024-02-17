@@ -23,5 +23,26 @@ interface CharacterDomain {
         override fun <T : Any> map(mapper: DomainMapper<T>): T  =
             mapper.mapError(message)
     }
+
+    data class MockForUiTest(
+         val id: String,
+         val name: String,
+         val allies: String,
+         val enemies: String,
+         val affiliation: String,
+         val photoUrl: String,
+         var isFavorite: Boolean
+    ) : CharacterDomain {
+
+        fun changeFavorite(): MockForUiTest {
+            isFavorite = !isFavorite
+            return this
+        }
+
+        fun toSuccess(): CharacterDomain = Success(id, name, allies, enemies, affiliation, photoUrl, isFavorite)
+
+        override fun <T : Any> map(mapper: DomainMapper<T>)=
+            mapper.mapSuccess(id, name, allies, enemies, affiliation, photoUrl, isFavorite)
+    }
 }
 

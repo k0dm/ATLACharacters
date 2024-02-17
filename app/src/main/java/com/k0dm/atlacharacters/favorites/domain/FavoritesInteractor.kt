@@ -27,5 +27,17 @@ interface FavoritesInteractor {
             cacheDataSource.delete(id)
         }
     }
+
+    class MockForUiTests: FavoritesInteractor { //TODO: Write correct logic
+
+        override suspend fun allFavorites(): FavoritesDomain {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun removeFromFavorites(id: String) {
+            TODO("Not yet implemented")
+        }
+
+    }
 }
 
