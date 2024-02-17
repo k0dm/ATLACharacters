@@ -31,8 +31,7 @@ class FavoritesFragment : Fragment() {
             .provideRepresentative(FavoritesRepresentative::class.java)
         favoritesAdapter = FavoritesAdapter(representative)
         binding.favoritesRecyclerView.adapter = favoritesAdapter
-
-        representative.init(savedInstanceState == null)
+        representative.init()
     }
 
     override fun onResume() {
@@ -42,6 +41,11 @@ class FavoritesFragment : Fragment() {
                 uiState.update(favoritesAdapter)
             }
         })
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) representative.init()
     }
 
     override fun onPause() {

@@ -18,7 +18,7 @@ class MainRepresentativeTest {
         assertEquals(CharactersScreen, navigation.actualUiState)
 
         //onResume showing CharactersFragment
-        var navigationObserver = object : UiObserver<Screen> {
+        val navigationObserver = object : UiObserver<Screen> {
             override fun updateUi(uiState: Screen) = Unit
         }
         representative.startGettingUpdates(observer = navigationObserver)
@@ -34,7 +34,7 @@ class MainRepresentativeTest {
 
         //user click at navigation bar "Characters"
         representative.navigate(FavoritesScreen)
-        assertEquals(CharactersScreen, navigation.actualUiState)
+        assertEquals(FavoritesScreen, navigation.actualUiState)
         representative.notifyObserved()
         assertEquals(Screen.Empty, navigation.actualUiState)
     }
@@ -53,5 +53,7 @@ private class FakeNavigation : Navigation.Mutable {
         actualObserver = observer
     }
 
-    override fun clear() = Unit
+    override fun clear() {
+        actualUiState = Screen.Empty
+    }
 }

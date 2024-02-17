@@ -8,7 +8,7 @@ import com.k0dm.atlacharacters.favorites.domain.FavoritesInteractor
 
 interface FavoritesRepresentative : Representative<FavoritesUiState>, ClickItemAction {
 
-    fun init(isFirstRun: Boolean)
+    fun init()
 
     class Base(
         private val observable: FavoritesUiStateObservable,
@@ -17,13 +17,11 @@ interface FavoritesRepresentative : Representative<FavoritesUiState>, ClickItemA
         private val uiMapper: FavoritesDomainMapper<FavoritesUiState> = ToFavoritesUiMapper
     ) : FavoritesRepresentative, Representative.BaseRepresentative<FavoritesUiState>(runAsync) {
 
-        override fun init(isFirstRun: Boolean) {
-            if (isFirstRun) {
-                runAsync({
-                    interactor.allFavorites()
-                }) { favoritesDomain ->
-                    observable.updateUi(favoritesDomain.map(uiMapper))
-                }
+        override fun init() {
+            runAsync({
+                interactor.allFavorites()
+            }) { favoritesDomain ->
+                observable.updateUi(favoritesDomain.map(uiMapper))
             }
         }
 
@@ -35,7 +33,7 @@ interface FavoritesRepresentative : Representative<FavoritesUiState>, ClickItemA
             runAsync({
                 favoriteCharacterUi.removeFromFavorites(interactor)
                 interactor.allFavorites()
-            }) {favoritesDomain->
+            }) { favoritesDomain ->
                 observable.updateUi(favoritesDomain.map(uiMapper))
             }
         }

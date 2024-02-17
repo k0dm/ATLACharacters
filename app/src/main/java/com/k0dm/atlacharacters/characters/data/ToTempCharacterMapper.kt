@@ -1,8 +1,9 @@
 package com.k0dm.atlacharacters.characters.data
 
-import com.k0dm.atlacharacters.characters.data.cache.CharacterCache
+import com.k0dm.atlacharacters.characters.data.cache.TempCharacter
 
-object ToCharacterCacheMapper : DataMapper<CharacterCache> {
+
+object ToTempCharacterMapper: DataMapper<TempCharacter> {
 
     override fun map(
         id: String,
@@ -11,6 +12,5 @@ object ToCharacterCacheMapper : DataMapper<CharacterCache> {
         enemies: String,
         affiliation: String,
         photoUrl: String
-    ) = CharacterCache(id, name, allies, enemies, affiliation, photoUrl)
+    ) = TempCharacter(id, name, allies, enemies, affiliation, photoUrl)
 }
-

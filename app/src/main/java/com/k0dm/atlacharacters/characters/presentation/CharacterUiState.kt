@@ -5,8 +5,9 @@ import androidx.core.content.ContextCompat
 import com.k0dm.atlacharacters.R
 import com.k0dm.atlacharacters.databinding.FragmentCharactersBinding
 import com.squareup.picasso.Picasso
+import java.io.Serializable
 
-interface CharacterUiState {
+interface CharacterUiState : Serializable{
 
     fun show(binding: FragmentCharactersBinding)
 

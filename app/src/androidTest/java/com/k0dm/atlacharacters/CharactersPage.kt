@@ -16,7 +16,7 @@ import com.google.android.material.button.MaterialButton
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 
-class CharactersPage {
+internal class CharactersPage {
 
     private val characterLayoutId = R.id.characterLayout
     private val characterLayout = onView(
